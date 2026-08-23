@@ -1,4 +1,4 @@
-# Apex Ultimate — 落地页使用说明
+# ApexUlti — 落地页使用说明
 
 黑底 + 亮绿霓虹风格的交易指标落地页（参考 GainzAlgo 的设计感），一次卖 **8 个指标 + 1 个全套组合包**，另外还有 **2 个旗舰产品**（APEX Algorithm V2 / SMC Orderblock V5，仿 GainzAlgo 详情卡样式，带版本/档位切换），每个都有「Add to Cart / Buy Now」按钮，之后直接挂 Shopify 收款。
 
