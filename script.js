@@ -1,4 +1,4 @@
-/* =========================================================================
+﻿/* =========================================================================
    ⚙️ 只需要改这里 —— SHOPIFY 配置区（其余代码不用动）
    =========================================================================
    1. storeDomain：填你的 Shopify 店铺域名（后台左下角店铺名 + .myshopify.com）
@@ -125,10 +125,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ---------- 信号展示区：图片轮播 ---------- */
   const showcaseImages = [
-    "file:///C:/Users/TAN/.cursor/projects/c-Users-TAN-Downloads-New-folder/assets/c__Users_TAN_AppData_Roaming_Cursor_User_workspaceStorage_empty-window_images_image-04152870-6d0c-4ba9-94ee-cc2e9ef04ed8.png",
-    "file:///C:/Users/TAN/.cursor/projects/c-Users-TAN-Downloads-New-folder/assets/c__Users_TAN_AppData_Roaming_Cursor_User_workspaceStorage_empty-window_images_image-cd6d800f-f0c2-4000-96a4-d11277e027b7.png",
-    "file:///C:/Users/TAN/.cursor/projects/c-Users-TAN-Downloads-New-folder/assets/c__Users_TAN_AppData_Roaming_Cursor_User_workspaceStorage_empty-window_images_image-a318cc44-fcfb-4fe9-9e2a-ad207e22c979.png",
-    "file:///C:/Users/TAN/.cursor/projects/c-Users-TAN-Downloads-New-folder/assets/indicator-preview.png"
+    "images/golden-entry.png",
+    "images/scalpers-edge.png",
+    "images/apex-trend-pro.png",
+    "images/indicator-preview.png"
   ];
   const showcaseImg = document.getElementById("showcaseImg");
   const showcaseDots = document.getElementById("showcaseDots");
