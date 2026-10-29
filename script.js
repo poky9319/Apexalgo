@@ -14,18 +14,9 @@ const SHOPIFY_CONFIG = {
   storeDomain: "yourstore.myshopify.com",
   telegramLink: "https://t.me/your_telegram_username",
   variants: {
-    indicator1: "REPLACE_VARIANT_ID_1",
-    indicator2: "REPLACE_VARIANT_ID_2",
-    indicator3: "REPLACE_VARIANT_ID_3",
-    indicator4: "REPLACE_VARIANT_ID_4",
-    indicator5: "REPLACE_VARIANT_ID_5",
-    indicator6: "REPLACE_VARIANT_ID_6",
-    indicator7: "REPLACE_VARIANT_ID_7",
-    indicator8: "REPLACE_VARIANT_ID_8",
-    bundle: "REPLACE_VARIANT_ID_BUNDLE",
-    smcStandard: "REPLACE_VARIANT_ID_SMC_STANDARD",
-    smcPro: "REPLACE_VARIANT_ID_SMC_PRO",
-    apexV2: "REPLACE_VARIANT_ID_APEX_V2"
+    smc: "REPLACE_VARIANT_ID_SMC",       // SMC Orderblock V5 — RM 35.90
+    apexV2: "REPLACE_VARIANT_ID_APEX_V2", // APEX Algorithm V2 — RM 35.90 (also uses Shopify Buy Button below, keep both in sync)
+    combo: "REPLACE_VARIANT_ID_COMBO"    // SMC + APEX combo — RM 55.59
   }
 };
 /* ========================================================================= */
@@ -81,32 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll(".buy-btn").forEach(bindBuyBtn);
   document.querySelectorAll(".cart-btn").forEach(bindCartBtn);
-
-  /* ---------- 旗舰产品卡：Version / Preset 切换 ---------- */
-  document.querySelectorAll("[data-toggle-group]").forEach((group) => {
-    const card = group.closest(".flagship-card");
-    if (!card) return;
-    const wasEl = card.querySelector("[data-was]");
-    const nowEl = card.querySelector("[data-now]");
-    const cartBtn = card.querySelector(".cart-btn");
-    const buyBtn = card.querySelector(".buy-btn");
-
-    group.querySelectorAll(".toggle-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        group.querySelectorAll(".toggle-btn").forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-
-        const priceNow = btn.getAttribute("data-price-now");
-        const priceWas = btn.getAttribute("data-price-was");
-        const variant = btn.getAttribute("data-variant");
-        if (nowEl) nowEl.textContent = `$${priceNow} USD`;
-        if (wasEl) wasEl.textContent = `$${priceWas} USD`;
-
-        if (cartBtn) { cartBtn.setAttribute("data-variant-key", variant); bindCartBtn(cartBtn); }
-        if (buyBtn) { buyBtn.setAttribute("data-variant-key", variant); bindBuyBtn(buyBtn); }
-      });
-    });
-  });
 
   /* ---------- 购物车图标 ---------- */
   const cartLink = document.getElementById("cartLink");
