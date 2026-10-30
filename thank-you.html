@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Successful — ApexUlti</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .ty-wrap{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:40px 20px;}
+  .ty-card{
+    max-width:560px; width:100%; background:var(--card); border:1px solid var(--card-border);
+    border-radius:20px; padding:44px 36px; text-align:center; box-shadow:var(--shadow), var(--glow);
+  }
+  .ty-icon{font-size:52px; margin-bottom:18px;}
+  .ty-card h1{font-size:26px; font-weight:900; margin-bottom:12px;}
+  .ty-card p{color:var(--text-dim); font-size:14.5px; margin-bottom:10px; line-height:1.6;}
+  .ty-steps{text-align:left; background:var(--bg); border:1px solid var(--card-border); border-radius:12px; padding:18px 20px; margin:24px 0; font-size:13.5px; color:var(--text-dim);}
+  .ty-steps li{padding:6px 0; padding-left:22px; position:relative;}
+  .ty-steps li::before{content:"✓"; position:absolute; left:0; color:var(--green); font-weight:800;}
+  .ty-actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:10px;}
+</style>
+</head>
+<body>
+  <div class="ty-wrap">
+    <div class="ty-card">
+      <div class="ty-icon">✅</div>
+      <h1>Payment Successful!</h1>
+      <p>Thanks for your purchase. Your access instructions are on the way.</p>
+      <ul class="ty-steps">
+        <li>Check your email for your order confirmation</li>
+        <li>Message us on Telegram with your TradingView username</li>
+        <li>We'll grant Invite-Only access within minutes during business hours</li>
+      </ul>
+      <div class="ty-actions">
+        <a href="#" id="telegramLink" class="btn btn-primary">Message Us on Telegram</a>
+        <a href="index.html" class="btn btn-ghost">Back to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Keep the Telegram link in sync with the main SHOPIFY_CONFIG without duplicating it here.
+    document.getElementById('telegramLink').href = 'https://t.me/your_telegram_username';
+  </script>
+</body>
+</html>
