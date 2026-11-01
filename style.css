@@ -102,7 +102,7 @@ ul{list-style:none;}
   display:flex; align-items:center; justify-content:space-between;
 }
 .logo{font-size:20px; font-weight:900; letter-spacing:-0.5px; display:flex; align-items:center; gap:9px;}
-.logo-icon{height:30px; width:auto; display:block; flex-shrink:0;}
+.logo-icon{height:36px; width:auto; display:block; flex-shrink:0;}
 .logo-text{white-space:nowrap;}
 .logo span{color:var(--green);}
 .nav-links{display:flex; gap:28px;}
