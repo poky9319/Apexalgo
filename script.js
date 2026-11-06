@@ -1,4 +1,4 @@
-﻿/* =========================================================================
+/* =========================================================================
    ⚙️ 只需要改这里 —— SHOPIFY 配置区（其余代码不用动）
    =========================================================================
    1. storeDomain：填你的 Shopify 店铺域名（后台左下角店铺名 + .myshopify.com）
@@ -90,10 +90,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ---------- 信号展示区：图片轮播 ---------- */
   const showcaseImages = [
-    "images/golden-entry.png",
-    "images/scalpers-edge.png",
-    "images/apex-trend-pro.png",
-    "images/indicator-preview.png"
+    "images/apex-chart-buy.png?v=1",
+    "images/apex-chart-sell.png?v=1"
   ];
   const showcaseImg = document.getElementById("showcaseImg");
   const showcaseDots = document.getElementById("showcaseDots");
