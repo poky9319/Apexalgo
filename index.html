@@ -7,7 +7,7 @@
 <meta name="description" content="SMC Orderblock V5 and APEX Algorithm V2 — premium TradingView trading algorithms. Real-time AI signals, non-repainting, built for clear entries and exits. Instant checkout via Shopify.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261111rev6">
+<link rel="stylesheet" href="style.css?v=20261111rev7">
 <style>
   .bundle-posters,.bundle-collage,.combo-shots{
     display:grid !important;
@@ -501,28 +501,37 @@
   </section>
 
   <!-- ===== Backtest-style / Equity ===== -->
-  <section class="section section-alt">
+  <section class="section section-alt" id="performance">
     <div class="container">
       <div class="section-head reveal">
-        <span class="eyebrow">Demo Performance</span>
-        <h2>ApexUlti — Demo Equity Curve</h2>
-        <p class="demo-note">Demo equity curve — replace with your own verified backtest / track record before publishing.</p>
+        <span class="eyebrow">Strategy Tester · Apex Ultimate</span>
+        <h2>Equity Curve</h2>
+        <p class="demo-note">TradingView strategy tester · 7 Sep – 11 Nov 2026 · $5,000 initial capital. Tester results are not live-account profits and do not promise future returns.</p>
+      </div>
+      <div class="equity-stats reveal">
+        <div class="eq-stat">
+          <small>Total PnL</small>
+          <strong>+$6,357.68</strong>
+          <span class="eq-up">+127.15%</span>
+        </div>
+        <div class="eq-stat">
+          <small>Max Drawdown</small>
+          <strong>0.47%</strong>
+          <span>$26.99</span>
+        </div>
+        <div class="eq-stat">
+          <small>Profitable trades</small>
+          <strong>86.69%</strong>
+          <span>521 / 601</span>
+        </div>
+        <div class="eq-stat">
+          <small>Profit factor</small>
+          <strong>42.61</strong>
+          <span>Apex Ultimate</span>
+        </div>
       </div>
       <div class="backtest-frame reveal">
-        <div class="backtest-head">
-          <span><strong>ApexUlti Suite</strong> · Demo Backtest</span>
-          <span>Win rate 68% (Demo) · 1,532 trades (Demo)</span>
-        </div>
-        <svg viewBox="0 0 900 220" class="equity-svg" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="eqFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#ffc857" stop-opacity="0.45"/>
-              <stop offset="100%" stop-color="#ffc857" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-          <path d="M0,190 L0,170 C60,168 90,150 130,145 C180,138 210,120 260,115 C310,110 330,95 380,90 C430,85 450,60 500,55 C550,50 580,40 630,35 C680,30 710,20 760,16 C800,13 850,10 900,5 L900,190 Z" fill="url(#eqFill)"/>
-          <path d="M0,170 C60,168 90,150 130,145 C180,138 210,120 260,115 C310,110 330,95 380,90 C430,85 450,60 500,55 C550,50 580,40 630,35 C680,30 710,20 760,16 C800,13 850,10 900,5" fill="none" stroke="#ffc857" stroke-width="2.5"/>
-        </svg>
+        <img class="equity-shot" src="images/apex-equity.png?v=1" alt="Apex Ultimate equity curve, September to November 2026">
       </div>
     </div>
   </section>
@@ -650,6 +659,6 @@
 
 <div class="toast" id="toast">Added to cart ✓</div>
 
-<script src="script.js?v=20261111rev6"></script>
+<script src="script.js?v=20261111rev7"></script>
 </body>
 </html>
