@@ -358,7 +358,7 @@ ul{list-style:none;}
 .bundle-feats li{padding:5px 0; font-size:14px; color:var(--text);}
 .bundle-feats li::before{content:"✓ "; color:var(--green); font-weight:800;}
 .bundle-collage{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:18px;}
-.bundle-collage img{width:100%; height:120px; object-fit:cover; object-position:center; border-radius:10px; border:1px solid var(--card-border);}
+.bundle-collage img{width:100%; height:auto; display:block; border-radius:10px; border:1px solid var(--card-border);}
 .bundle-buy{text-align:center; background:var(--bg); border-radius:14px; padding:26px; border:1px solid var(--card-border);}
 .bundle-price{margin-bottom:16px;}
 .bundle-price .price-now{font-size:38px;}
@@ -430,9 +430,9 @@ ul{list-style:none;}
 .flagship-card.featured{border:1.5px solid var(--green); box-shadow:var(--glow);}
 .flagship-image{
   margin:-30px -30px 22px; border-radius:18px 18px 0 0; overflow:hidden;
-  aspect-ratio:16/10; background:#0a0908; border-bottom:1px solid var(--card-border);
+  background:#0a0908; border-bottom:1px solid var(--card-border);
 }
-.flagship-image img{width:100%; height:100%; object-fit:cover; object-position:center; display:block;}
+.flagship-image img{width:100%; height:auto; display:block;}
 .flagship-card .badge{z-index:2;}
 .flagship-feats{flex-grow:1;}
 .flagship-title{font-size:19px; font-weight:900; margin-bottom:4px;}
