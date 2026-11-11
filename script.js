@@ -88,13 +88,10 @@ document.addEventListener("DOMContentLoaded", () => {
     el.rel = "noopener";
   });
 
-  /* ---------- Live TradingView chart (pan / zoom / timeframe) ---------- */
-  const tvHost = document.getElementById("tvChartHost");
-  const tvButtons = document.querySelectorAll(".tv-sym");
-  function mountApexChart(symbol) {
-    if (!tvHost || !window.TradingView) return;
-    tvHost.innerHTML = '<div id="tradingview_apex"></div>';
-    new TradingView.widget({
+  /* ---------- Live TradingView chart (iframe, no tv.js) ---------- */
+  const tvFrame = document.getElementById("tvFrame");
+  function tvEmbedSrc(symbol) {
+    const spec = {
       autosize: true,
       symbol: symbol,
       interval: "5",
@@ -102,37 +99,25 @@ document.addEventListener("DOMContentLoaded", () => {
       theme: "dark",
       style: "1",
       locale: "en",
-      toolbar_bg: "#12100c",
-      enable_publishing: false,
+      backgroundColor: "#0c0a08",
+      gridColor: "rgba(255, 200, 87, 0.08)",
       hide_top_toolbar: false,
       hide_side_toolbar: false,
       allow_symbol_change: true,
       save_image: false,
+      calendar: false,
       withdateranges: true,
-      hideideas: true,
-      container_id: "tradingview_apex"
+      support_host: "https://www.tradingview.com"
+    };
+    return "https://www.tradingview-widget.com/embed-widget/advanced-chart/?locale=en#" + encodeURIComponent(JSON.stringify(spec));
+  }
+  document.querySelectorAll(".tv-sym").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tv-sym").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      if (tvFrame) tvFrame.src = tvEmbedSrc(btn.getAttribute("data-tv-symbol"));
     });
-  }
-  function loadTradingView(callback) {
-    if (window.TradingView) {
-      callback();
-      return;
-    }
-    const tag = document.createElement("script");
-    tag.src = "https://s.tradingview.com/tv.js";
-    tag.onload = callback;
-    document.head.appendChild(tag);
-  }
-  if (tvHost) {
-    loadTradingView(() => mountApexChart("OANDA:XAUUSD"));
-    tvButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        tvButtons.forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        loadTradingView(() => mountApexChart(btn.getAttribute("data-tv-symbol")));
-      });
-    });
-  }
+  });
 
   /* ---------- Logo / review 跑马灯：复制一份内容，做到无缝循环 ---------- */
   const logoTrack = document.getElementById("logoTrack");

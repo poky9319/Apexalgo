@@ -6,8 +6,10 @@
 <title>ApexUlti — Premium TradingView Trading Algorithms</title>
 <meta name="description" content="SMC Orderblock V5 and APEX Algorithm V2 — premium TradingView trading algorithms. Real-time AI signals, non-repainting, built for clear entries and exits. Instant checkout via Shopify.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://www.tradingview-widget.com">
+<link rel="preconnect" href="https://s.tradingview.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261111rev7">
+<link rel="stylesheet" href="style.css?v=20261111rev8">
 <style>
   .bundle-posters,.bundle-collage,.combo-shots{
     display:grid !important;
@@ -483,7 +485,14 @@
         <a class="tv-open" href="https://www.tradingview.com/script/O91fHRcu-APEX-Algorithrm-V3/" target="_blank" rel="noopener">Open APEX V3 on TradingView ↗</a>
       </div>
       <div class="tv-wrap">
-        <div id="tvChartHost"></div>
+        <iframe
+          id="tvFrame"
+          title="Live TradingView chart"
+          src="https://www.tradingview-widget.com/embed-widget/advanced-chart/?locale=en#%7B%22autosize%22%3Atrue%2C%22symbol%22%3A%22OANDA%3AXAUUSD%22%2C%22interval%22%3A%225%22%2C%22timezone%22%3A%22Asia%2FKuala_Lumpur%22%2C%22theme%22%3A%22dark%22%2C%22style%22%3A%221%22%2C%22locale%22%3A%22en%22%2C%22backgroundColor%22%3A%22%230c0a08%22%2C%22gridColor%22%3A%22rgba(255%2C%20200%2C%2087%2C%200.08)%22%2C%22hide_top_toolbar%22%3Afalse%2C%22hide_side_toolbar%22%3Afalse%2C%22allow_symbol_change%22%3Atrue%2C%22save_image%22%3Afalse%2C%22calendar%22%3Afalse%2C%22withdateranges%22%3Atrue%2C%22support_host%22%3A%22https%3A%2F%2Fwww.tradingview.com%22%7D"
+          loading="eager"
+          referrerpolicy="origin"
+          allow="clipboard-write; fullscreen"
+        ></iframe>
       </div>
 
       <div class="showcase-info">
@@ -659,6 +668,6 @@
 
 <div class="toast" id="toast">Added to cart ✓</div>
 
-<script src="script.js?v=20261111rev7"></script>
+<script src="script.js?v=20261111rev8"></script>
 </body>
 </html>
