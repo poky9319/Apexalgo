@@ -111,10 +111,14 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(() => setShowcase((showcaseIndex + 1) % showcaseImages.length), 5000);
   }
 
-  /* ---------- Logo 跑马灯：自动复制一份内容，做到无缝循环 ---------- */
+  /* ---------- Logo / review 跑马灯：复制一份内容，做到无缝循环 ---------- */
   const logoTrack = document.getElementById("logoTrack");
   if (logoTrack) {
     logoTrack.innerHTML += logoTrack.innerHTML;
+  }
+  const reviewTrack = document.getElementById("reviewTrack");
+  if (reviewTrack) {
+    reviewTrack.innerHTML += reviewTrack.innerHTML;
   }
 
   /* ---------- 移动端导航开关 ---------- */
