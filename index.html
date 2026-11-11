@@ -7,7 +7,7 @@
 <meta name="description" content="SMC Orderblock V5 and APEX Algorithm V2 — premium TradingView trading algorithms. Real-time AI signals, non-repainting, built for clear entries and exits. Instant checkout via Shopify.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261111rev5">
+<link rel="stylesheet" href="style.css?v=20261111rev6">
 <style>
   .bundle-posters,.bundle-collage,.combo-shots{
     display:grid !important;
@@ -470,16 +470,21 @@
   <section class="section" id="showcase">
     <div class="container">
       <div class="section-head reveal">
-        <span class="showcase-tag">📈 ApexUlti Suite · Live Chart Examples</span>
-        <h2>See Our Signals in Action</h2>
-        <p>Real chart examples from the ApexUlti indicator suite — Buy/Sell signals with a full trade map, not just arrows.</p>
+        <span class="showcase-tag">📈 Live Chart · Drag · Zoom · Timeframes</span>
+        <h2>Move the Chart Yourself</h2>
+        <p>Live XAUUSD from TradingView. Drag to pan, scroll to zoom, switch timeframe. APEX Buy/Sell overlays apply after you add the indicator on TradingView.</p>
       </div>
 
-      <div class="showcase-frame reveal">
-        <img id="showcaseImg" src="images/apex-chart-buy.png?v=1" alt="ApexUlti signal example">
-        <div class="showcase-banner">Example setup — for illustration only</div>
+      <div class="tv-toolbar">
+        <button class="tv-sym active" data-tv-symbol="OANDA:XAUUSD">XAUUSD</button>
+        <button class="tv-sym" data-tv-symbol="OANDA:EURUSD">EURUSD</button>
+        <button class="tv-sym" data-tv-symbol="OANDA:GBPUSD">GBPUSD</button>
+        <button class="tv-sym" data-tv-symbol="BINANCE:BTCUSDT">BTCUSDT</button>
+        <a class="tv-open" href="https://www.tradingview.com/script/O91fHRcu-APEX-Algorithrm-V3/" target="_blank" rel="noopener">Open APEX V3 on TradingView ↗</a>
       </div>
-      <div class="showcase-dots" id="showcaseDots"></div>
+      <div class="tv-wrap">
+        <div id="tvChartHost"></div>
+      </div>
 
       <div class="showcase-info">
         <div class="showcase-info-card reveal">
@@ -491,7 +496,7 @@
           <p>Aim to flag potential market tops before bearish reversals develop, so you can manage exits.</p>
         </div>
       </div>
-      <p class="demo-note" style="text-align:center; margin-top:14px;">*Chart examples shown are illustrative. Past patterns don't guarantee future results — always manage your own risk.</p>
+      <p class="demo-note" style="text-align:center; margin-top:14px;">*Live market data via TradingView. APEX signal overlays are not shown on this public chart — add the indicator on TradingView after purchase. Not financial advice.</p>
     </div>
   </section>
 
@@ -645,6 +650,6 @@
 
 <div class="toast" id="toast">Added to cart ✓</div>
 
-<script src="script.js?v=20261111rev5"></script>
+<script src="script.js?v=20261111rev6"></script>
 </body>
 </html>

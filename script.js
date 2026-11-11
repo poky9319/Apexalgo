@@ -88,27 +88,50 @@ document.addEventListener("DOMContentLoaded", () => {
     el.rel = "noopener";
   });
 
-  /* ---------- 信号展示区：图片轮播 ---------- */
-  const showcaseImages = [
-    "images/apex-chart-buy.png?v=1",
-    "images/apex-chart-sell.png?v=1"
-  ];
-  const showcaseImg = document.getElementById("showcaseImg");
-  const showcaseDots = document.getElementById("showcaseDots");
-  let showcaseIndex = 0;
-  if (showcaseImg && showcaseDots) {
-    showcaseImages.forEach((_, i) => {
-      const dot = document.createElement("button");
-      if (i === 0) dot.classList.add("active");
-      dot.addEventListener("click", () => setShowcase(i));
-      showcaseDots.appendChild(dot);
+  /* ---------- Live TradingView chart (pan / zoom / timeframe) ---------- */
+  const tvHost = document.getElementById("tvChartHost");
+  const tvButtons = document.querySelectorAll(".tv-sym");
+  function mountApexChart(symbol) {
+    if (!tvHost || !window.TradingView) return;
+    tvHost.innerHTML = '<div id="tradingview_apex"></div>';
+    new TradingView.widget({
+      autosize: true,
+      symbol: symbol,
+      interval: "5",
+      timezone: "Asia/Kuala_Lumpur",
+      theme: "dark",
+      style: "1",
+      locale: "en",
+      toolbar_bg: "#12100c",
+      enable_publishing: false,
+      hide_top_toolbar: false,
+      hide_side_toolbar: false,
+      allow_symbol_change: true,
+      save_image: false,
+      withdateranges: true,
+      hideideas: true,
+      container_id: "tradingview_apex"
     });
-    function setShowcase(i) {
-      showcaseIndex = i;
-      showcaseImg.src = showcaseImages[i];
-      [...showcaseDots.children].forEach((d, idx) => d.classList.toggle("active", idx === i));
+  }
+  function loadTradingView(callback) {
+    if (window.TradingView) {
+      callback();
+      return;
     }
-    setInterval(() => setShowcase((showcaseIndex + 1) % showcaseImages.length), 5000);
+    const tag = document.createElement("script");
+    tag.src = "https://s.tradingview.com/tv.js";
+    tag.onload = callback;
+    document.head.appendChild(tag);
+  }
+  if (tvHost) {
+    loadTradingView(() => mountApexChart("OANDA:XAUUSD"));
+    tvButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        tvButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        loadTradingView(() => mountApexChart(btn.getAttribute("data-tv-symbol")));
+      });
+    });
   }
 
   /* ---------- Logo / review 跑马灯：复制一份内容，做到无缝循环 ---------- */
