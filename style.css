@@ -357,10 +357,10 @@ ul{list-style:none;}
 .bundle-info p{color:var(--text-dim); margin-bottom:18px; font-size:14.5px;}
 .bundle-feats li{padding:5px 0; font-size:14px; color:var(--text);}
 .bundle-feats li::before{content:"✓ "; color:var(--green); font-weight:800;}
-.bundle-posters{display:grid; grid-template-columns:1fr 1fr; gap:16px; width:100%; margin:0 0 28px;}
-.bundle-posters img{
-  width:100%; max-width:100%; height:auto !important; aspect-ratio:1/1;
-  object-fit:contain; object-position:center; background:#0a0908;
+.bundle-posters,.bundle-collage,.combo-shots{display:grid; grid-template-columns:1fr 1fr; gap:16px; width:100%; margin:0 0 28px;}
+.bundle-posters img,.bundle-collage img,.combo-shots img{
+  width:100%; max-width:100%; height:auto !important; max-height:none !important;
+  aspect-ratio:1/1; object-fit:contain; object-position:center; background:#0a0908;
   border-radius:14px; border:1px solid var(--card-border); display:block;
 }
 .bundle-buy{text-align:center; background:var(--bg); border-radius:14px; padding:26px; border:1px solid var(--card-border);}

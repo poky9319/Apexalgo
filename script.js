@@ -192,4 +192,20 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("apexedge_offer_end", endTime);
   }
   startCountdown(endTime);
+
+  const bundleCard = document.querySelector(".bundle-card");
+  if (bundleCard) {
+    const grid = bundleCard.querySelector(".bundle-grid");
+    const shots = bundleCard.querySelector(".combo-shots, .bundle-posters, .bundle-collage");
+    if (grid && shots && grid.contains(shots)) {
+      bundleCard.insertBefore(shots, grid);
+    }
+    bundleCard.querySelectorAll(".combo-shots img, .bundle-posters img, .bundle-collage img").forEach((img) => {
+      img.style.setProperty("height", "auto", "important");
+      img.style.setProperty("width", "100%", "important");
+      img.style.setProperty("object-fit", "contain", "important");
+      img.style.setProperty("aspect-ratio", "1 / 1", "important");
+      img.style.setProperty("max-height", "none", "important");
+    });
+  }
 });
