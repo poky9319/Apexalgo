@@ -1,110 +1,177 @@
 /**
- * HitPay Postback (Webhook) Receiver — Cloudflare Worker
- * =======================================================
- * 用途：接收 HitPay 支付成功后发来的 POST 通知，验证签名，
- *       然后（可选）发一条 Telegram 消息通知你有新订单。
+ * ApexUlti PayEssence checkout + payment notification.
  *
- * 部署步骤（2 分钟，用你已有的 Cloudflare 账号）：
- *   1. 打开 https://dash.cloudflare.com → 左侧 "Workers & Pages" → "Create" → "Create Worker"
- *   2. 随便取个名字，例如 "hitpay-postback"，点 "Deploy"（先部署一个空的）
- *   3. 部署完后点 "Edit code"，把这个文件的全部内容复制粘贴进去，覆盖默认代码，点右上角 "Deploy"
- *   4. 回到 Worker 的设置页 → "Settings" → "Variables" → "Add variable"，加这几个（类型选 "Encrypt" 更安全）：
- *        - HITPAY_SALT          必填。HitPay 后台 → Payment Gateway / API Keys 页面里的 "Salt" 值，用于验证签名
- *        - TELEGRAM_BOT_TOKEN   选填。要收通知才需要，去 Telegram 找 @BotFather 建一个机器人拿到的 token
- *        - TELEGRAM_CHAT_ID     选填。你自己的 Telegram 数字 ID 或群组 ID（跟 TELEGRAM_BOT_TOKEN 一起填才会推送）
- *   5. 保存后，Worker 页面顶部会显示一个网址，形如：
- *        https://hitpay-postback.<你的用户名>.workers.dev
- *      这个网址就是要填进 HitPay 表单 "Postback JSON URL" 的值。
+ * Cloudflare secrets / variables:
+ *   PE_SECRET_KEY      required. PayEssence Secret Key. Set as a secret, not in the webpage.
+ *   PE_MERCHANT_CODE   M3796126
+ *   PE_DEPOSIT_URL     https://api.mxpay.asia/WebForm/Deposit.aspx
+ *   PE_REDIRECT_URL    https://apexulti.com/thank-you.html
+ *   TELEGRAM_BOT_TOKEN optional
+ *   TELEGRAM_CHAT_ID   optional
  *
- * 不需要改任何代码，只要在第 4 步填变量即可。
+ * Customer checkout:  GET /checkout?product=smc|apex|combo&name=TradingViewUsername
+ * PayEssence success: POST JSON to this worker's root URL
  */
+
+const PRODUCTS = {
+  smc: { amount: "35.90", desc: "SMC Orderblock V5" },
+  apex: { amount: "35.90", desc: "APEX Algorithm V2" },
+  combo: { amount: "55.59", desc: "SMC Orderblock V5 + APEX Algorithm V2" },
+};
 
 export default {
   async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+
+    if (request.method === "GET" && (url.pathname === "/checkout" || url.pathname === "/checkout/")) {
+      return checkout(url, env);
+    }
+
+    if (request.method === "GET") {
+      return new Response("ApexUlti PayEssence checkout is ready.", { status: 200 });
+    }
+
     if (request.method !== "POST") {
-      return new Response("OK — waiting for HitPay POST", { status: 200 });
+      return new Response("Method not allowed", { status: 405 });
     }
 
     let payload;
-    const contentType = request.headers.get("content-type") || "";
-
     try {
-      if (contentType.includes("application/json")) {
-        payload = await request.json();
-      } else {
-        // HitPay's default postback is application/x-www-form-urlencoded
-        const form = await request.formData();
-        payload = Object.fromEntries(form.entries());
-      }
-    } catch (err) {
+      payload = await request.json();
+    } catch {
       return new Response("Bad payload", { status: 400 });
     }
 
-    // ---------- 1. 验证签名（防止有人伪造假的"付款成功"请求） ----------
-    const salt = env.HITPAY_SALT;
-    const receivedHmac = payload.hmac;
-
-    if (salt && receivedHmac) {
-      const isValid = await verifyHitPayHmac(payload, salt, receivedHmac);
-      if (!isValid) {
-        return new Response("Invalid signature", { status: 401 });
+    const secret = env.PE_SECRET_KEY;
+    if (secret && payload.CheckString2) {
+      const expected = await sha256Hex(
+        reverseString(String(payload.MerchantCode || "")) +
+          reverseString(String(payload.TransNum || "")) +
+          secret
+      );
+      if (expected !== String(payload.CheckString2).toLowerCase()) {
+        return new Response("Invalid CheckString2", { status: 401 });
       }
     }
-    // 如果没配置 HITPAY_SALT，这里会跳过验证（不建议长期这样，先把流程跑通再补上）。
 
-    // ---------- 2. 必须在几秒内返回 200，否则 HitPay 会重试/判定失败 ----------
-    // 用 waitUntil 把"发通知"这件慢一点的事放到后台做，不卡住响应。
-    const notify = (async () => {
+    ctx.waitUntil((async () => {
       if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) {
         await sendTelegramNotification(payload, env);
       }
-    })();
-
-    ctx.waitUntil(notify);
+    })());
 
     return new Response("OK", { status: 200 });
   },
 };
 
-async function verifyHitPayHmac(payload, salt, receivedHmac) {
-  const entries = Object.keys(payload)
-    .filter((k) => k !== "hmac")
-    .sort()
-    .map((k) => `${k}${payload[k]}`)
-    .join("");
+async function checkout(url, env) {
+  const secret = env.PE_SECRET_KEY;
+  const merchant = env.PE_MERCHANT_CODE;
+  if (!secret || !merchant) {
+    return new Response("Payment is not configured yet.", { status: 500 });
+  }
 
-  const key = await crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(salt),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-  const sigBuffer = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(entries));
-  const computedHmac = [...new Uint8Array(sigBuffer)]
+  const key = String(url.searchParams.get("product") || "").toLowerCase();
+  const product = PRODUCTS[key === "apexv2" ? "apex" : key];
+  const name = cleanName(url.searchParams.get("name"));
+  if (!product || !name) {
+    return new Response("Go back and enter your TradingView username using letters and numbers only, then choose a product.", { status: 400 });
+  }
+
+  const transNum = makeTransNum();
+  const currency = "MYR";
+  const signature = await sha256Hex(`${merchant}${secret}${transNum}${currency}${product.amount}`);
+  const depositUrl = env.PE_DEPOSIT_URL || "https://api.mxpay.asia/WebForm/Deposit.aspx";
+  const redirectUrl = env.PE_REDIRECT_URL || "https://apexulti.com/thank-you.html";
+
+  const fields = {
+    MerchantCode: merchant,
+    TransNum: transNum,
+    Currency: currency,
+    Amount: product.amount,
+    PaymentDesc: product.desc,
+    FirstName: name,
+    LastName: "",
+    EmailAddress: "",
+    PhoneNum: "",
+    Address: "",
+    City: "",
+    State: "",
+    Country: "MYS",
+    Postcode: "",
+    MerchantRemark: `${key} ${name}`.slice(0, 300),
+    Signature: signature,
+    RedirectUrl: redirectUrl,
+  };
+
+  const inputs = Object.entries(fields)
+    .map(([field, value]) => `<input type="hidden" name="${escapeHtml(field)}" value="${escapeHtml(value)}">`)
+    .join("\n");
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Redirecting to payment</title></head>
+<body>
+  <p>Taking you to the secure payment page for ${escapeHtml(product.desc)}, RM ${escapeHtml(product.amount)}.</p>
+  <form id="pay" method="POST" action="${escapeHtml(depositUrl)}">
+${inputs}
+  </form>
+  <script>document.getElementById("pay").submit();</script>
+</body>
+</html>`;
+
+  return new Response(html, {
+    status: 200,
+    headers: {
+      "content-type": "text/html; charset=utf-8",
+      "cache-control": "no-store",
+    },
+  });
+}
+
+function cleanName(value) {
+  const name = String(value || "").trim();
+  if (!/^[A-Za-z0-9_.-]{2,40}$/.test(name)) return "";
+  return name;
+}
+
+function makeTransNum() {
+  const rand = crypto.randomUUID().replaceAll("-", "").slice(0, 6);
+  return `APEX${Date.now()}${rand}`;
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+function reverseString(value) {
+  return [...value].reverse().join("");
+}
+
+async function sha256Hex(value) {
+  const buffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+  return [...new Uint8Array(buffer)]
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
-
-  return computedHmac === receivedHmac;
 }
 
 async function sendTelegramNotification(payload, env) {
-  const status = payload.status || "unknown";
-  const amount = payload.amount || "?";
-  const currency = payload.currency || "MYR";
-  const reference = payload.reference_number || payload.payment_id || "N/A";
-  const email = payload.customer_email || payload.email || "N/A";
-
-  const emoji = status === "completed" ? "✅" : "⚠️";
+  const result = String(payload.Result || "");
+  const ok = result === "10001";
   const text =
-    `${emoji} *ApexUlti — HitPay Postback*\n` +
-    `Status: ${status}\n` +
-    `Amount: ${amount} ${currency}\n` +
-    `Reference: ${reference}\n` +
-    `Customer: ${email}`;
+    `${ok ? "✅" : "⚠️"} *ApexUlti — PayEssence*\n` +
+    `Result: ${result || "unknown"}\n` +
+    `Amount: ${payload.Amount || "?"} ${payload.Currency || "MYR"}\n` +
+    `TransNum: ${payload.TransNum || "N/A"}\n` +
+    `DepositId: ${payload.DepositId || "N/A"}\n` +
+    `Name: ${payload.FirstName || "N/A"} ${payload.LastName || ""}\n` +
+    `Email: ${payload.EmailAddress || "N/A"}`;
 
-  const url = `https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`;
-  await fetch(url, {
+  await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

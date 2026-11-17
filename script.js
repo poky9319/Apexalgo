@@ -1,25 +1,17 @@
 /* =========================================================================
-   ⚙️ 只需要改这里 —— SHOPIFY 配置区（其余代码不用动）
-   =========================================================================
-   1. storeDomain：填你的 Shopify 店铺域名（后台左下角店铺名 + .myshopify.com）
-      例：mystore.myshopify.com
-   2. variants：把下面每一个 "REPLACE_..." 换成对应产品的 Variant ID。
-      取得 Variant ID 的方法：
-        Shopify 后台 → Products → 打开该商品 → 点击对应 Variant
-        → 看浏览器网址列，网址最后一段数字就是 Variant ID
-        例：.../variants/44123456789012  → 44123456789012 就是 Variant ID
-   3. telegramLink：改成你自己的 Telegram 用户名或群组连结
+   PayEssence 收款。改 Telegram 连结即可，付款网址不要改。
    ========================================================================= */
-const SHOPIFY_CONFIG = {
-  storeDomain: "yourstore.myshopify.com",
-  telegramLink: "https://t.me/your_telegram_username",
-  variants: {
-    smc: "REPLACE_VARIANT_ID_SMC",       // SMC Orderblock V5 — RM 35.90
-    apexV2: "REPLACE_VARIANT_ID_APEX_V2", // APEX Algorithm V2 — RM 35.90 (also uses Shopify Buy Button below, keep both in sync)
-    combo: "REPLACE_VARIANT_ID_COMBO"    // SMC + APEX combo — RM 55.59
-  }
+const PAY_CONFIG = {
+  checkout: "https://apexulti-pay.staralgo8888.workers.dev/checkout",
+  telegramLink: "https://t.me/your_telegram_username"
 };
-/* ========================================================================= */
+
+const USERNAME_FIELD = {
+  smc: "smcUsername",
+  apex: "apexUsername",
+  apexV2: "apexUsername",
+  combo: "comboUsername"
+};
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -32,58 +24,35 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast._t = setTimeout(() => toast.classList.remove("show"), 2200);
   }
 
-  function cartUrlFor(key) {
-    const variantId = SHOPIFY_CONFIG.variants[key];
-    if (!variantId || variantId.startsWith("REPLACE_")) return null;
-    return `https://${SHOPIFY_CONFIG.storeDomain}/cart/${variantId}:1`;
-  }
-
-  /* ---------- "Buy Now" 按钮：直接跳转 Shopify 结账（同一页面）---------- */
-  function bindBuyBtn(btn) {
-    const key = btn.getAttribute("data-variant-key");
-    const url = cartUrlFor(key);
-    btn.onclick = null;
-    if (url) {
-      btn.href = url;
-      btn.target = "_self";
-    } else {
-      btn.href = "#";
-      btn.onclick = (e) => {
-        e.preventDefault();
-        alert("请先在 script.js 顶部的 SHOPIFY_CONFIG 里填入你的店铺域名与 Variant ID。");
-      };
+  function startCheckout(event, key) {
+    event.preventDefault();
+    const input = document.getElementById(USERNAME_FIELD[key] || "");
+    const name = input ? input.value.trim() : "";
+    if (!/^[A-Za-z0-9_.-]{2,40}$/.test(name)) {
+      alert("Please enter your TradingView username (letters and numbers only).");
+      if (input) input.focus();
+      return;
     }
+    const product = key === "apexV2" ? "apex" : key;
+    window.location.href = PAY_CONFIG.checkout
+      + "?product=" + encodeURIComponent(product)
+      + "&name=" + encodeURIComponent(name);
   }
 
-  /* ---------- "Add to Cart" 按钮：新分页加入购物车 + 提示 ---------- */
-  function bindCartBtn(btn) {
-    const key = btn.getAttribute("data-variant-key");
-    const url = cartUrlFor(key);
-    btn.onclick = (e) => {
-      e.preventDefault();
-      if (!url) {
-        alert("请先在 script.js 顶部的 SHOPIFY_CONFIG 里填入你的店铺域名与 Variant ID。");
-        return;
-      }
-      window.open(url, "_blank", "noopener");
-      showToast("已加入购物车 ✓ Added to cart");
-    };
-  }
+  document.querySelectorAll(".buy-btn, .cart-btn").forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      startCheckout(event, btn.getAttribute("data-variant-key"));
+    });
+  });
 
-  document.querySelectorAll(".buy-btn").forEach(bindBuyBtn);
-  document.querySelectorAll(".cart-btn").forEach(bindCartBtn);
-
-  /* ---------- 购物车图标 ---------- */
   const cartLink = document.getElementById("cartLink");
   if (cartLink) {
-    cartLink.href = `https://${SHOPIFY_CONFIG.storeDomain}/cart`;
-    cartLink.target = "_blank";
-    cartLink.rel = "noopener";
+    cartLink.href = "#flagship";
+    cartLink.target = "_self";
   }
 
-  /* ---------- Telegram 连结 ---------- */
   document.querySelectorAll("#telegramLink, #telegramLink2").forEach((el) => {
-    el.href = SHOPIFY_CONFIG.telegramLink;
+    el.href = PAY_CONFIG.telegramLink;
     el.target = "_blank";
     el.rel = "noopener";
   });

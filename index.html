@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ApexUlti — Premium TradingView Trading Algorithms</title>
-<meta name="description" content="SMC Orderblock V5 and APEX Algorithm V2 — premium TradingView trading algorithms. Real-time AI signals, non-repainting, built for clear entries and exits. Instant checkout via Shopify.">
+<meta name="description" content="SMC Orderblock V5 and APEX Algorithm V2 — premium TradingView trading algorithms. Real-time AI signals, non-repainting, built for clear entries and exits. Instant checkout via FPX and DuitNow.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://www.tradingview-widget.com">
 <link rel="preconnect" href="https://s.tradingview.com">
@@ -182,154 +182,7 @@
             <li>Free lifetime updates</li>
           </ul>
           <div class="flagship-buttons">
-            <div id="product-component-1786475486738" class="shopify-buy-embed"></div>
-            <script type="text/javascript">
-            /*<![CDATA[*/
-            (function () {
-              var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
-              if (window.ShopifyBuy) {
-                if (window.ShopifyBuy.UI) {
-                  ShopifyBuyInit();
-                } else {
-                  loadScript();
-                }
-              } else {
-                loadScript();
-              }
-              function loadScript() {
-                var script = document.createElement('script');
-                script.async = true;
-                script.src = scriptURL;
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
-                script.onload = ShopifyBuyInit;
-              }
-              function ShopifyBuyInit() {
-                var client = ShopifyBuy.buildClient({
-                  domain: 'kciyd0-0u.myshopify.com',
-                  storefrontAccessToken: '686cb26bfa89400aeb992ea69b602d61',
-                });
-                ShopifyBuy.UI.onReady(client).then(function (ui) {
-                  ui.createComponent('product', {
-                    id: '7917826637875',
-                    node: document.getElementById('product-component-1786475486738'),
-                    moneyFormat: 'RM%7B%7Bamount%7D%7D%20MYR',
-                    options: {
-              "product": {
-                "styles": {
-                  "product": {
-                    "@media (min-width: 601px)": {
-                      "max-width": "100%",
-                      "margin-left": "0px",
-                      "margin-bottom": "0px"
-                    }
-                  },
-                  "button": {
-                    "width": "100%",
-                    "font-size": "15px",
-                    "font-weight": "700",
-                    "padding-top": "16px",
-                    "padding-bottom": "16px",
-                    "border-radius": "10px",
-                    "border": "none",
-                    "color": "#1a1610",
-                    "background-image": "linear-gradient(135deg, #ffe08a 0%, #ffc857 48%, #e0a82e 100%)",
-                    "background-color": "#ffc857",
-                    "box-shadow": "0 8px 24px rgba(255,200,87,0.35)",
-                    ":hover": {
-                      "background-color": "#ffc857",
-                      "box-shadow": "0 12px 32px rgba(255,200,87,0.5)"
-                    },
-                    ":focus": {
-                      "background-color": "#ffc857"
-                    }
-                  }
-                },
-                "buttonDestination": "checkout",
-                "contents": {
-                  "img": false,
-                  "title": false,
-                  "price": false
-                },
-                "text": {
-                  "button": "Buy it now"
-                }
-              },
-              "productSet": {
-                "styles": {
-                  "products": {
-                    "@media (min-width: 601px)": {
-                      "margin-left": "-20px"
-                    }
-                  }
-                }
-              },
-              "modalProduct": {
-                "contents": {
-                  "img": false,
-                  "imgWithCarousel": true,
-                  "button": false,
-                  "buttonWithQuantity": true
-                },
-                "styles": {
-                  "product": {
-                    "@media (min-width: 601px)": {
-                      "max-width": "100%",
-                      "margin-left": "0px",
-                      "margin-bottom": "0px"
-                    }
-                  },
-                  "button": {
-                    ":hover": {
-                      "background-color": "#23bd5d"
-                    },
-                    "background-color": "#27d267",
-                    ":focus": {
-                      "background-color": "#23bd5d"
-                    }
-                  }
-                },
-                "text": {
-                  "button": "Add to cart"
-                }
-              },
-              "option": {},
-              "cart": {
-                "styles": {
-                  "button": {
-                    ":hover": {
-                      "background-color": "#23bd5d"
-                    },
-                    "background-color": "#27d267",
-                    ":focus": {
-                      "background-color": "#23bd5d"
-                    }
-                  }
-                },
-                "text": {
-                  "total": "Subtotal",
-                  "button": "Checkout"
-                }
-              },
-              "toggle": {
-                "styles": {
-                  "toggle": {
-                    "background-color": "#27d267",
-                    ":hover": {
-                      "background-color": "#23bd5d"
-                    },
-                    ":focus": {
-                      "background-color": "#23bd5d"
-                    }
-                  }
-                }
-              }
-            },
-                  });
-                });
-              }
-            })();
-            /*]]>*/
-            </script>
+            <a href="#" class="btn btn-primary btn-block buy-btn" id="apexBuy" data-variant-key="apex">Buy it now</a>
           </div>
         </div>
 
@@ -354,6 +207,8 @@
           </div>
           <div class="bundle-buy">
             <div class="bundle-price"><span class="price-now">RM 55.59</span><span class="price-was">RM 71.80</span></div>
+            <label class="flagship-toggle-label" for="comboUsername">Enter your TradingView username:</label>
+            <input class="flagship-input" id="comboUsername" type="text" placeholder="Your TradingView username..." style="margin-bottom:12px;">
             <div class="btn-row" style="margin-bottom:10px;">
               <a href="#" class="btn btn-outline cart-btn" data-variant-key="combo">Add to Cart</a>
               <a href="#" class="btn btn-primary buy-btn" data-variant-key="combo">Buy it Now</a>
@@ -366,7 +221,7 @@
       <div class="flagship-payment reveal">
         <span>🔒 Safe and secure checkout</span>
         <div class="payment-icons" style="margin:0;">
-          <span>SSL</span><span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>STRIPE</span><span>APPLE PAY</span><span>GOOGLE PAY</span>
+          <span>FPX</span><span>DUITNOW</span><span>QR</span><span>BANK TRANSFER</span>
         </div>
       </div>
     </div>
@@ -582,7 +437,7 @@
         <div class="step-card">
           <span class="step-num">02</span>
           <div class="step-icon">🔔</div>
-          <h4>Checkout on Shopify</h4>
+          <h4>Pay with FPX or DuitNow</h4>
           <p>Secure checkout, then receive access instructions instantly.</p>
         </div>
         <div class="step-card">
@@ -608,7 +463,7 @@
       <div class="faq-list reveal">
         <div class="faq-item">
           <button class="faq-q">How do I receive my indicators after purchase? <span>+</span></button>
-          <div class="faq-a"><p>After checkout on Shopify, you'll receive access instructions by email. Most buyers get setup steps within minutes.</p></div>
+          <div class="faq-a"><p>After payment, message us on Telegram with your TradingView username. Most buyers get setup steps within minutes.</p></div>
         </div>
         <div class="faq-item">
           <button class="faq-q">Can I buy both algorithms, or just one? <span>+</span></button>
@@ -668,6 +523,6 @@
 
 <div class="toast" id="toast">Added to cart ✓</div>
 
-<script src="script.js?v=20261111rev8"></script>
+<script src="script.js?v=20261117pay"></script>
 </body>
 </html>

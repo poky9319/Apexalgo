@@ -42,8 +42,25 @@
   </div>
 
   <script>
-    // Keep the Telegram link in sync with the main SHOPIFY_CONFIG without duplicating it here.
     document.getElementById('telegramLink').href = 'https://t.me/your_telegram_username';
+
+    const params = new URLSearchParams(location.search);
+    const result = params.get('Result');
+    const trans = params.get('TransNum');
+    const title = document.querySelector('h1');
+    const intro = document.querySelector('.ty-card p');
+    if (result === '10002') {
+      title.textContent = 'Payment not completed';
+      intro.textContent = 'This payment did not go through. You can return to the page and try again.';
+    } else if (result === '10004') {
+      title.textContent = 'Payment is processing';
+      intro.textContent = 'The bank is still confirming this payment. Message us on Telegram and we will check it.';
+    }
+    if (trans && intro) {
+      const line = document.createElement('p');
+      line.textContent = 'Order number: ' + trans;
+      intro.insertAdjacentElement('afterend', line);
+    }
   </script>
 </body>
 </html>

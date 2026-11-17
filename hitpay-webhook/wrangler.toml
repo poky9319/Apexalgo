@@ -1,0 +1,8 @@
+name = "apexulti-pay"
+main = "worker.js"
+compatibility_date = "2026-11-16"
+
+[vars]
+PE_MERCHANT_CODE = "M3796126"
+PE_DEPOSIT_URL = "https://api.mxpay.asia/WebForm/Deposit.aspx"
+PE_REDIRECT_URL = "https://apexulti.com/thank-you.html"
