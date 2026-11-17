@@ -74,8 +74,9 @@ async function checkout(url, env) {
   const key = String(url.searchParams.get("product") || "").toLowerCase();
   const product = PRODUCTS[key === "apexv2" ? "apex" : key];
   const name = cleanName(url.searchParams.get("name"));
-  if (!product || !name) {
-    return new Response("Go back and enter your TradingView username using letters and numbers only, then choose a product.", { status: 400 });
+  const email = cleanEmail(url.searchParams.get("email"));
+  if (!product || !name || !email) {
+    return new Response("Go back and enter your TradingView username and a valid email, then choose a product.", { status: 400 });
   }
 
   const transNum = makeTransNum();
@@ -92,14 +93,14 @@ async function checkout(url, env) {
     PaymentDesc: product.desc,
     FirstName: name,
     LastName: "",
-    EmailAddress: "",
+    EmailAddress: email,
     PhoneNum: "",
     Address: "",
     City: "",
     State: "",
     Country: "MYS",
     Postcode: "",
-    MerchantRemark: `${key} ${name}`.slice(0, 300),
+    MerchantRemark: `${key} ${name} ${email}`.slice(0, 300),
     Signature: signature,
     RedirectUrl: redirectUrl,
   };
@@ -133,6 +134,12 @@ function cleanName(value) {
   const name = String(value || "").trim();
   if (!/^[A-Za-z0-9_.-]{2,40}$/.test(name)) return "";
   return name;
+}
+
+function cleanEmail(value) {
+  const email = String(value || "").trim();
+  if (email.length > 100 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return "";
+  return email;
 }
 
 function makeTransNum() {

@@ -13,6 +13,13 @@ const USERNAME_FIELD = {
   combo: "comboUsername"
 };
 
+const EMAIL_FIELD = {
+  smc: "smcEmail",
+  apex: "apexEmail",
+  apexV2: "apexEmail",
+  combo: "comboEmail"
+};
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const toast = document.getElementById("toast");
@@ -27,16 +34,24 @@ document.addEventListener("DOMContentLoaded", () => {
   function startCheckout(event, key) {
     event.preventDefault();
     const input = document.getElementById(USERNAME_FIELD[key] || "");
+    const emailInput = document.getElementById(EMAIL_FIELD[key] || "");
     const name = input ? input.value.trim() : "";
+    const email = emailInput ? emailInput.value.trim() : "";
     if (!/^[A-Za-z0-9_.-]{2,40}$/.test(name)) {
       alert("Please enter your TradingView username (letters and numbers only).");
       if (input) input.focus();
       return;
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 100) {
+      alert("Please enter a valid email so we can send your access.");
+      if (emailInput) emailInput.focus();
+      return;
+    }
     const product = key === "apexV2" ? "apex" : key;
     window.location.href = PAY_CONFIG.checkout
       + "?product=" + encodeURIComponent(product)
-      + "&name=" + encodeURIComponent(name);
+      + "&name=" + encodeURIComponent(name)
+      + "&email=" + encodeURIComponent(email);
   }
 
   document.querySelectorAll(".buy-btn, .cart-btn").forEach((btn) => {
